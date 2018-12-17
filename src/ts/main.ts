@@ -9,6 +9,17 @@ import { UtilsUI } from './ui/ui-utils';
 import { content } from './../../content';
 import { ContentRenderer } from './ui/content-renderer';
 import { UI } from './ui/ui';
+import { setupServiceWorker } from './sw';
+
+// setup service worker
+/* let willNotifyOfflineCapable: Boolean = false;
+(function() {
+  setupServiceWorker().then(success => {
+    if (!LocalStorage.getItem('hasNotifiedOfflineCapable')) {
+      willNotifyOfflineCapable = true;
+    }
+  });
+})(); */
 
 // start up ui
 UI.init();
@@ -97,7 +108,7 @@ UI.init();
 // track login data
 (async function() {
   let userName = LocalStorage.getItem('userData').name;
-  let loginData = await db.getData('usersData');
+  let loginData = (await db.getData('usersData')) as any;
   loginData[
     userName
   ].loginTrack.lastTimeLoggedIn = new Date().toLocaleDateString();
@@ -106,7 +117,8 @@ UI.init();
 
   // track duration
   let start = new Date().getTime();
-  setInterval(() => {
+  setInterval(async () => {
+    let loginData = (await db.getData('usersData')) as any;
     loginData[userName].loginTrack.duration = new Date().getTime() - start;
     db.writeData('usersData', loginData);
   }, 10000);

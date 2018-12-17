@@ -38,15 +38,7 @@ export class Database {
   }
 
   async getData(propName: string) {
-    let data =
-      (await this.database
-        .ref(propName)
-        .once('value')
-        .then(snapshot => {
-          return snapshot.val();
-        })) || {};
-
-    return data;
+    return (await this.database.ref(propName).once('value')).val();
   }
 
   writeData(propName: string, value: any) {

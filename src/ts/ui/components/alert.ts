@@ -3,8 +3,8 @@ import { AnimationManager, AnimationOptions } from './../animation-manager';
 import { UtilsUI } from './../ui-utils';
 import {
   StringStringObject,
-  StringBooleanObject,
-  StringAnyObject
+  StringAnyObject,
+  StringObjectObject
 } from './../../interfaces';
 import { Components } from './components';
 
@@ -32,9 +32,9 @@ export class Alert extends Components {
     element?: HTMLElement,
     container?: HTMLElement,
     // @ts-ignore
-    readonly animationNames?: StringStringObject,
-    readonly componentOptions?: StringAnyObject,
-    readonly animationOptions?: AnimationOptions
+    readonly animationNames: StringStringObject = {},
+    readonly componentOptions: StringObjectObject = {},
+    readonly animationOptions: AnimationOptions = {}
   ) {
     super('alert', element || undefined, container || undefined);
 
@@ -61,7 +61,7 @@ export class Alert extends Components {
     let mobileBreakpoints = ['mobile-s', 'mobile-m', 'mobile-l', 'tablet'];
     if (mobileBreakpoints.includes(UIState.Breakpoint)) {
       this.animationNames.animationInName = 'fadeInUp';
-      this.animationNames.animationOutName = 'fadeOutUp';
+      this.animationNames.animationOutName = 'fadeOutDown';
     }
   }
 
@@ -69,12 +69,13 @@ export class Alert extends Components {
     text: string,
     duration = 1000,
     //animationName = 'fadeInRight',
-    overrideOptions: StringStringObject | undefined = this
-      .componentOptions as StringStringObject,
+    overrideOptions: StringObjectObject | undefined = this
+      .componentOptions as StringObjectObject,
     overrideAnimationOptions: AnimationOptions | undefined = this
       .animationOptions
   ) {
     UtilsUI.styleElement(this.element, {
+      // @ts-ignore
       backgroundColor: overrideOptions.type.backgroundColor
     });
 
@@ -83,6 +84,7 @@ export class Alert extends Components {
       {},
       {},
       {
+        // @ts-ignore
         innerHTML: overrideOptions.type.icon
       }
     );

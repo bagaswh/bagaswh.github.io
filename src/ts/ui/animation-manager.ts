@@ -14,7 +14,7 @@ const animationCleanupQueue: object[] = [];
 
 setInterval(() => {
   while (animationCleanupQueue.length) {
-    let handler = animationCleanupQueue.shift();
+    let handler = animationCleanupQueue.shift() as () => void;
 
     try {
       handler ? handler() : null;
@@ -46,7 +46,7 @@ export const AnimationManager = {
   ) {
     let defaultOpts = {
       interruptible: false,
-      speed: AnimationManager.Constants.SPEED_FASTER
+      speed: AnimationManager.Constants.SPEED_VERY_FAST
     };
 
     opts = { ...defaultOpts, ...opts };
@@ -58,7 +58,7 @@ export const AnimationManager = {
 
       if (
         animationIndex > -1 &&
-        !this.animationsOnGoing[animationIndex].opts.interruptible
+        !(this.animationsOnGoing[animationIndex] as any).opts.interruptible
       ) {
         reject('animation is ongoing');
       }

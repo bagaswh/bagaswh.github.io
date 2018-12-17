@@ -1,4 +1,4 @@
-import { StringStringObject, StringBooleanObject } from './../../interfaces';
+import { StringAnyObject } from './../../interfaces';
 import { AnimationManager, AnimationOptions } from './../animation-manager';
 
 export class Components {
@@ -8,9 +8,7 @@ export class Components {
     protected readonly className: string,
     protected readonly element: HTMLElement = document.createElement('div'),
     protected readonly container: HTMLElement = document.body,
-    protected readonly componentOptions:
-      | StringStringObject
-      | StringBooleanObject = {},
+    protected readonly componentOptions: StringAnyObject = {},
     protected readonly animationOptions: AnimationOptions = {}
   ) {
     this.className = 'component__' + className;

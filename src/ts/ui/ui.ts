@@ -62,13 +62,14 @@ export const UI = {
           console.log(error);
         }
       );
-    } else {
-      console.log('asu');
+    }
+
+    if (!localContent) {
       ContentRenderer.render(element, onlineContent as ElementContent[], true);
-      /* AnimationManager.animate(element, 'slideInUp', {
+      AnimationManager.animate(element, 'slideInUp', {
         interruptible: false,
         speed: 'fast'
-      }); */
+      });
       uiAlert.hide();
       LocalStorage.setItem('content', onlineContent);
     }

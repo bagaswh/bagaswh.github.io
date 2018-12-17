@@ -83,7 +83,7 @@ UI.init();
 
   async function storeName(name: string) {
     LocalStorage.setItem('userData', { name });
-    let onlineUsersData = await db.getData('userData');
+    let onlineUsersData = await db.getData('usersData');
     if (!(onlineUsersData as any)[name]) {
       (onlineUsersData as any)[name] = {
         loginTrack: {

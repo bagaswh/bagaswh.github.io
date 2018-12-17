@@ -1,0 +1,27 @@
+.component__alert {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+
+  width: fit-content;
+  padding: 10px;
+
+  color: #fff;
+}
+
+.component__alert .fas {
+  margin-right: 10px;
+}
+
+.component__alert>* {
+  vertical-align: middle;
+}
+
+@media only screen and (max-width: 768px) {
+  .component__alert {
+    top: auto;
+    bottom: 10px;
+
+    padding: 5px 10px;
+  }
+}

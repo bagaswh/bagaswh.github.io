@@ -1,0 +1,53 @@
+// Font import
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700');
+
+// Partial import
+@import 'variables';
+
+// Global
+body {
+  color: $primary-typography-color;
+
+  font-family: 'Roboto Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+ul p,
+ol p {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+// Global class modifier
+.fas {
+  display: inline-block;
+}
+
+// Content
+// .category
+.category {
+  margin-bottom: 50px;
+}
+
+.category h2,
+.category h3 {
+  width: fit-content;
+}
+
+.category h2 {
+  padding-bottom: 1px;
+  border-bottom: 5px solid $primary-color;
+}
+
+.category h3 {
+  padding-bottom: 0.5px;
+  border-bottom: 3px solid $primary-color;
+}
+
+.category p {
+  width: 100%;
+}

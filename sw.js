@@ -1,5 +1,5 @@
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open('v1').then(cache => {
+  e.waitUntil(caches.open('v2').then(cache => {
     return cache.addAll([
       './',
       './index.html',
@@ -14,7 +14,7 @@ self.addEventListener('install', e => {
 self.addEventListener('fetch', e => {
   e.respondWith(caches.match(e.request).then(res => {
     return res || fetch(e.request).then(resp => {
-      return caches.open('v1').then(cache => {
+      return caches.open('v2').then(cache => {
         cache.put(e.request, resp.clone());
         return resp;
       });
@@ -23,7 +23,7 @@ self.addEventListener('fetch', e => {
 });
 
 self.addEventListener('activate', e => {
-  let cacheKeepList = ['v1'];
+  let cacheKeepList = ['v2'];
 
   e.waitUntil(caches.keys().then(keyList => {
     return Promise.all(keyList.map(key => {

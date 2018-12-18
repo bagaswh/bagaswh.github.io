@@ -33,13 +33,14 @@ export class Alert extends Components {
     container?: HTMLElement,
     // @ts-ignore
     readonly animationNames: StringStringObject = {},
-    readonly componentOptions: StringObjectObject = {},
+    readonly componentOptions: StringAnyObject = {},
     readonly animationOptions: AnimationOptions = {}
   ) {
     super('alert', element || undefined, container || undefined);
 
     let defaultComponentOptions = {
-      type: Alert.Constants.TYPE_NORMAL
+      type: Alert.Constants.TYPE_NORMAL,
+      position: 'top-right'
     };
     let defaultAnimationNames = {
       animationInName: 'fadeInRight',
@@ -48,6 +49,11 @@ export class Alert extends Components {
     this.componentOptions = { ...defaultComponentOptions, ...componentOptions };
     this.animationNames = { ...defaultAnimationNames, ...animationNames };
 
+    // prevent overlapping on top of each other
+    if (UtilsUI.$$(this.className).length > 1) {
+      this.preventOverlapping();
+    }
+
     // set animationName
     this.setAnimationName();
 
@@ -55,6 +61,54 @@ export class Alert extends Components {
     window.addEventListener('breakpointchange', e => {
       this.setAnimationName();
     });
+  }
+
+  private preventOverlapping() {
+    // get last alert element
+    let lastAlert = UtilsUI.getLastElementOfSelector(
+      '.component__alert'
+    ) as HTMLElement;
+
+    if (lastAlert) {
+      lastAlert.hidden = false;
+      UtilsUI.styleElement(lastAlert, {
+        visibility: 'hidden'
+      });
+
+      let lastAlertRect = lastAlert.getBoundingClientRect();
+      let lastAlertStylesheet = window.getComputedStyle(lastAlert);
+
+      // window.getComputedStyle calculates height asynchronously
+      setTimeout(() => {
+        let lastAlertHeight = Number(
+          (lastAlertStylesheet.height as string).replace('px', '')
+        );
+
+        let finalPosition = '';
+
+        if (this.componentOptions.position.match(/top/)) {
+          let lastAlertTop = Number(
+            (lastAlertStylesheet.top as string).replace('px', '')
+          );
+          finalPosition = lastAlertTop + lastAlertHeight + 'px';
+          UtilsUI.styleElement(this.element, {
+            top: finalPosition
+          });
+        } else if (this.componentOptions.position.match(/bottom/)) {
+          let lastAlertBottom = Number(
+            (lastAlertStylesheet.bottom as string).replace('px', '')
+          );
+          finalPosition = lastAlertBottom + lastAlertHeight + 'px';
+          UtilsUI.styleElement(this.element, {
+            bottom: finalPosition
+          });
+        }
+
+        UtilsUI.styleElement(lastAlert, {
+          visibility: 'visible'
+        });
+      }, 0);
+    }
   }
 
   setAnimationName() {

@@ -19,5 +19,13 @@ export const LocalStorage = {
     } else {
       localStorage.setItem(key, value);
     }
+  },
+
+  clear() {
+    localStorage.clear();
+  },
+
+  getLength() {
+    return localStorage.length;
   }
 };

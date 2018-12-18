@@ -19,7 +19,7 @@ setInterval(() => {
     try {
       handler ? handler() : null;
     } catch (e) {
-      console.error('error executing handler in queue');
+      console.error('error executing handler in animationCleanupQueue');
     }
   }
 }, 0);
@@ -84,7 +84,12 @@ export const AnimationManager = {
           // @ts-ignore
           opts
         });
+        console.log(this.animationsOnGoing);
       });
+
+      setInterval(() => {
+        //console.log(this.animationsOnGoing);
+      }, 1000);
 
       element.addEventListener(
         'animationend',
@@ -121,6 +126,8 @@ export const AnimationManager = {
         // @ts-ignore
         ...object.animationName
       );
+
+      this.animationsOnGoing.splice(animationIndex, animationIndex + 1);
     }
   }
 };

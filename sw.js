@@ -3,7 +3,6 @@ self.addEventListener('install', e => {
     return cache.addAll([
       './',
       './index.html',
-      './assets/',
       './dist/css/style.min.css',
       './dist/js/bundle.js',
       './dist/lib/css/animate.min.css',

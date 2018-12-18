@@ -13,7 +13,7 @@ export class Components {
   ) {
     this.className = 'component__' + className;
     this.element.classList.add(this.className);
-    this.element.hidden = true;
+    this.element.hidden = false;
     this.container.prepend(this.element);
     this.isAnimating = false;
   }
@@ -24,7 +24,6 @@ export class Components {
 
   protected animate(animationName: string, opts: AnimationOptions = {}) {
     opts = { ...this.animationOptions, ...opts };
-    console.log(opts);
 
     this.setIsAnimating(true);
     return AnimationManager.animate(

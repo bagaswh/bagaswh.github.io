@@ -43,12 +43,11 @@ export const UI = {
         type: Alert.Constants.TYPE_LOADING
       },
       {
-        interruptible: true
+        interruptible: false
       }
     );
-    uiAlert.show('Memuat konten online...');
+    uiAlert.show('Memuat konten online...', Infinity);
     let onlineContent = await _getOnlineContent();
-    console.log(onlineContent);
     if (isEqual(localContent, onlineContent)) {
       uiAlert.hide().then(
         done => {

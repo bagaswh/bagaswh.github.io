@@ -11,15 +11,23 @@ import { ContentRenderer } from './ui/content-renderer';
 import { UI } from './ui/ui';
 import { setupServiceWorker } from './sw';
 
+// clear previous storage
+if (
+  !LocalStorage.getItem('hasBeenNotifiedNewVersion') &&
+  LocalStorage.getLength()
+) {
+  LocalStorage.clear();
+  LocalStorage.setItem('hasBeenNotifiedNewVersion', true);
+}
+
 // setup service worker
-/* let willNotifyOfflineCapable: Boolean = false;
 (function() {
   setupServiceWorker().then(success => {
-    if (!LocalStorage.getItem('hasNotifiedOfflineCapable')) {
-      willNotifyOfflineCapable = true;
+    console.log(success);
+    if (!LocalStorage.getItem('hasBeenNotifiedOfflineCapable')) {
     }
   });
-})(); */
+})();
 
 // start up ui
 UI.init();

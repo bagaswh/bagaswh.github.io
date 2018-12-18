@@ -1,5 +1,7 @@
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open('v2').then(cache => {
+var CACHE_NAME = 'v3';
+
+self.addEventListener('install', function (e) {
+  e.waitUntil(caches.open(CACHE_NAME).then(function (cache) {
     return cache.addAll([
       './',
       './index.html',
@@ -11,10 +13,10 @@ self.addEventListener('install', e => {
   }));
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(caches.match(e.request).then(res => {
-    return res || fetch(e.request).then(resp => {
-      return caches.open('v2').then(cache => {
+self.addEventListener('fetch', function (e) {
+  e.respondWith(caches.match(e.request).then(function (res) {
+    return res || fetch(e.request).then(function (resp) {
+      return caches.open(CACHE_NAME).then(function (cache) {
         cache.put(e.request, resp.clone());
         return resp;
       });
@@ -23,10 +25,10 @@ self.addEventListener('fetch', e => {
 });
 
 self.addEventListener('activate', e => {
-  let cacheKeepList = ['v2'];
+  let cacheKeepList = [CACHE_NAME];
 
-  e.waitUntil(caches.keys().then(keyList => {
-    return Promise.all(keyList.map(key => {
+  e.waitUntil(caches.keys().then(function (keyList) {
+    return Promise.all(keyList.map(function (key) {
       if (!cacheKeepList.includes(key)) {
         return caches.delete(key);
       }

@@ -46,7 +46,7 @@ export const AnimationManager = {
   ) {
     let defaultOpts = {
       interruptible: false,
-      speed: AnimationManager.Constants.SPEED_VERY_FAST
+      speed: AnimationManager.Constants.SPEED_FAST
     };
 
     opts = { ...defaultOpts, ...opts };

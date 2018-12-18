@@ -18,14 +18,14 @@ if (
 ) {
   LocalStorage.clear();
   LocalStorage.setItem('hasBeenNotifiedNewVersion', true);
+} else {
+  LocalStorage.setItem('hasBeenNotifiedNewVersion', true);
 }
 
 // setup service worker
 (function() {
   setupServiceWorker().then(success => {
     console.log(success);
-    if (!LocalStorage.getItem('hasBeenNotifiedOfflineCapable')) {
-    }
   });
 })();
 

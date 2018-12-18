@@ -84,7 +84,6 @@ export const AnimationManager = {
           // @ts-ignore
           opts
         });
-        console.log(this.animationsOnGoing);
       });
 
       setInterval(() => {

@@ -1,0 +1,26 @@
+@import '../variables';
+
+.btn {
+    padding: 5px 15px;
+    border: 3px solid;
+
+    color: #fff;
+}
+
+.btn>* {
+    vertical-align: top;
+}
+
+.btn--primary {
+    background-color: $primary-color;
+}
+
+.btn--danger {
+    background-color: #ff5252;
+}
+
+.btn--white {
+    background-color: #fff;
+    border-color: inherit;
+    color: #373d3f;
+}

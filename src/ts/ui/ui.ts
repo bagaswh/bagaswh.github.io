@@ -9,6 +9,7 @@ import { content } from './../../../content';
 import { AnimationManager } from './animation-manager';
 import { LocalStorage } from '../model/localstorage';
 import { ActionBinder } from './action-binder/action-binder';
+import { Alert } from './components/alert';
 
 function _getLocalContent() {
   return LocalStorage.getItem('content');
@@ -63,7 +64,7 @@ export const UI = {
       onlineContent = await _getOnlineContent();
       localContent = _getLocalContent();
       if (!isEqual(localContent, onlineContent)) {
-        console.log('Data sama');
+        new Alert().show('Tidak ada update!');
       }
     }
   }

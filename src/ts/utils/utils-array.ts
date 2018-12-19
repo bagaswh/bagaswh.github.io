@@ -3,11 +3,10 @@ export const UtilsArray = {
     let i = -1;
     array.forEach((item, index) => {
       for (let key in props) {
-        if (!(item as any)[key]) {
-          return -1;
+        if ((item as any)[key] && (item as any)[key] === props[key]) {
+          i = index;
         }
       }
-      i = index;
     });
 
     return i;

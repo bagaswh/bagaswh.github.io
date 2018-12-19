@@ -1,13 +1,8 @@
 import { Alert } from './ui/components/alert';
-import { UtilsArray } from './utils/utils-array';
 import { UtilsString } from './utils/utils-string';
 import { db } from './model/firebase';
 import { StringRegExpObject } from './interfaces';
 import { LocalStorage } from './model/localstorage';
-import { ActionBinder } from './ui/action-binder/action-binder';
-import { UtilsUI } from './ui/ui-utils';
-import { content } from './../../content';
-import { ContentRenderer } from './ui/content-renderer';
 import { UI } from './ui/ui';
 import { setupServiceWorker } from './sw';
 
@@ -26,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // setup service worker
   (function() {
     setupServiceWorker().then(success => {
-      console.log(success);
+      new Alert().show('Website dapat dimuat secara offline!');
     });
   })();
 

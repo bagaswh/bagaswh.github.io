@@ -19,8 +19,10 @@
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
+    "@types/mustache": "^0.8.32",
     "@types/underscore": "^1.8.9",
     "firebase": "^5.7.0",
+    "mustache": "^3.0.1",
     "ts-loader": "^5.3.1",
     "underscore": "^1.9.1",
     "webpack": "^4.27.1",

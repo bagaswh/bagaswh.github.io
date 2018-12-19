@@ -13,6 +13,7 @@ function _generateAnimationID() {
 export interface AnimationOptions {
   speed?: string;
   interruptible?: Boolean;
+  repeat?: Boolean;
 }
 
 export const AnimationManager = {
@@ -32,10 +33,14 @@ export const AnimationManager = {
   ) {
     let defaultOpts = {
       interruptible: false,
-      speed: AnimationManager.Constants.SPEED_FAST
+      speed: AnimationManager.Constants.SPEED_FAST,
+      repeat: false
     };
 
     opts = { ...defaultOpts, ...opts };
+    if (opts.repeat) {
+      opts.interruptible = true;
+    }
 
     return new Promise((resolve, reject) => {
       let animationIndex = UtilsArray.findObject(this.animationsOnGoing, {
@@ -54,6 +59,9 @@ export const AnimationManager = {
       }
 
       let _animationName = ['animated', animationName, opts.speed];
+      if (opts.repeat) {
+        _animationName.push('infinite');
+      }
       element.classList.add(...(_animationName as string[]));
 
       element.addEventListener('animationstart', e => {

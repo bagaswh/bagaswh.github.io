@@ -1,7 +1,7 @@
 import { db } from './../../model/firebase';
 import { LocalStorage } from '../../model/localstorage';
 interface EventHandlersNamespace {
-  [index: string]: (e: Event) => void;
+  [index: string]: (e: any) => any;
 }
 
 interface EventHandlersList {
@@ -18,7 +18,11 @@ export const EventHandlers: EventHandlersList = {};
  * Category Links Event Handlers
  */
 EventHandlers.CategoryLinks = {
-  async sendClickData(e: Event) {
+  async sendClickData(e: MouseEvent) {
+    if (e.which === 3) {
+      return;
+    }
+
     let userName = LocalStorage.getItem('userData').name;
     let onlineUsersData = await db.getData('usersData');
 

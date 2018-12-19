@@ -6,7 +6,7 @@ export const UtilsUI = {
 
   $$(selector: string, parentElement: Document | HTMLElement = document) {
     let elements = parentElement.querySelectorAll(selector);
-    return Array.from(elements || []);
+    return Array.from(elements || []) as HTMLElement[];
   },
 
   getSelectorType(selector: string) {

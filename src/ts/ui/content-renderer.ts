@@ -1,3 +1,4 @@
+import { content } from './../../../content';
 import { StringStringObject } from './../interfaces';
 import { UtilsUI } from './ui-utils';
 
@@ -53,7 +54,7 @@ export const ContentRenderer = {
   render(
     element: HTMLElement,
     contentData: ElementContent[],
-    clearContainerBeforeRender: Boolean
+    clearContainerBeforeRender: Boolean = true
   ): void {
     if (clearContainerBeforeRender) {
       element.innerHTML = '';

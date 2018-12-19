@@ -10,20 +10,6 @@ function _generateAnimationID() {
   );
 }
 
-const animationCleanupQueue: object[] = [];
-
-setInterval(() => {
-  while (animationCleanupQueue.length) {
-    let handler = animationCleanupQueue.shift() as () => void;
-
-    try {
-      handler ? handler() : null;
-    } catch (e) {
-      console.error('error executing handler in animationCleanupQueue');
-    }
-  }
-}, 0);
-
 export interface AnimationOptions {
   speed?: string;
   interruptible?: Boolean;
@@ -71,7 +57,17 @@ export const AnimationManager = {
       element.classList.add(...(_animationName as string[]));
 
       element.addEventListener('animationstart', e => {
-        if (e.target !== e.currentTarget) return;
+        //if (e.target !== e.currentTarget) return;
+        let id = _generateAnimationID();
+
+        // sometimes animationstart fired twice
+        let identicalAnimation = UtilsArray.findObject(this.animationsOnGoing, {
+          element,
+          animationName: _animationName
+        });
+        if (identicalAnimation > -1) {
+          return;
+        }
 
         // @ts-ignore
         this.animationsOnGoing.push({
@@ -80,31 +76,25 @@ export const AnimationManager = {
           // @ts-ignore
           animationName: _animationName,
           // @ts-ignore
-          id: _generateAnimationID(),
+          id,
           // @ts-ignore
           opts
         });
       });
 
-      setInterval(() => {
-        //console.log(this.animationsOnGoing);
-      }, 1000);
-
       element.addEventListener(
         'animationend',
         e => {
-          animationCleanupQueue.push(() => {
-            element.classList.remove(...(_animationName as string[]));
+          element.classList.remove(...(_animationName as string[]));
 
-            let animationIndex = UtilsArray.findObject(
-              this.animationsOnGoing,
-              // @ts-ignore
-              { element }
-            );
-            this.animationsOnGoing.splice(animationIndex, animationIndex + 1);
+          let animationIndex = UtilsArray.findObject(
+            this.animationsOnGoing,
+            // @ts-ignore
+            { element }
+          );
+          this.animationsOnGoing.splice(animationIndex, 1);
 
-            resolve();
-          });
+          resolve();
         },
         {
           once: true

@@ -1,3 +1,4 @@
+import { Observer } from './../utils/object-observer';
 import { isEqual } from 'underscore';
 import { UtilsObject } from './../utils/utils-object';
 import { UIState } from './ui-state';
@@ -8,7 +9,6 @@ import { content } from './../../../content';
 import { AnimationManager } from './animation-manager';
 import { LocalStorage } from '../model/localstorage';
 import { ActionBinder } from './action-binder/action-binder';
-import { Alert } from './components/alert';
 
 function _getLocalContent() {
   return LocalStorage.getItem('content');
@@ -16,6 +16,21 @@ function _getLocalContent() {
 
 async function _getOnlineContent() {
   return await db.getData('mainContent');
+}
+
+async function _makePreContentView(element: HTMLElement) {
+  let preContentSVG = UtilsUI.$('.pre-content').innerHTML;
+  element.innerHTML = preContentSVG;
+  await AnimationManager.animate(element, 'fadeIn', {
+    speed: 'faster'
+  });
+}
+
+async function _clearPreContentView(element: HTMLElement) {
+  await AnimationManager.animate(element, 'fadeOut', {
+    speed: 'faster'
+  });
+  element.innerHTML = '';
 }
 
 export const UI = {
@@ -27,52 +42,29 @@ export const UI = {
 
   async populateContent(element: HTMLElement) {
     let localContent = _getLocalContent();
+    let onlineContent = await db.getData('mainContent');
     if (localContent) {
-      ContentRenderer.render(element, localContent, true);
-      AnimationManager.animate(element, 'slideInUp', {
-        interruptible: false,
-        speed: 'fast'
+      AnimationManager.animate(element, 'fadeIn', {
+        speed: 'faster'
       });
-    }
-
-    let uiAlert = new Alert(
-      undefined,
-      undefined,
-      undefined,
-      {
-        type: Alert.Constants.TYPE_LOADING
-      },
-      {
-        interruptible: true
-      }
-    );
-
-    uiAlert.show('Memuat konten online...', Infinity);
-    let onlineContent = await _getOnlineContent();
-    uiAlert.hide();
-    if (isEqual(localContent, onlineContent)) {
-      uiAlert.hide().then(
-        done => {
-          // @ts-ignore
-          // @ts-ignore
-          uiAlert.show('Tidak ada update.', undefined, {
-            type: Alert.Constants.TYPE_NORMAL
-          });
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      ContentRenderer.render(element, localContent, true);
     }
 
     if (!localContent) {
-      ContentRenderer.render(element, onlineContent as ElementContent[], true);
-      AnimationManager.animate(element, 'slideInUp', {
-        interruptible: false,
-        speed: 'fast'
+      await _makePreContentView(element);
+      onlineContent = await _getOnlineContent();
+      await _clearPreContentView(element);
+      ContentRenderer.render(element, onlineContent);
+      AnimationManager.animate(element, 'fadeIn', {
+        speed: 'faster'
       });
-      uiAlert.hide();
       LocalStorage.setItem('content', onlineContent);
+    } else {
+      onlineContent = await _getOnlineContent();
+      localContent = _getLocalContent();
+      if (!isEqual(localContent, onlineContent)) {
+        console.log('Data sama');
+      }
     }
   }
 };

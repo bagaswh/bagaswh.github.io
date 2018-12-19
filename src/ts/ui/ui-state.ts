@@ -1,4 +1,8 @@
+import { StringAnyObject } from './../interfaces';
+
 interface UIState {
+  Constants: StringAnyObject;
+
   init: () => void;
   setCurrentBreakpoint: () => void;
 
@@ -7,6 +11,10 @@ interface UIState {
 
 // @ts-ignore
 export const UIState: UIState = {
+  Constants: {
+    MOBILE_BREAKPOINTS: ['mobile-s', 'mobile-m', 'mobile-l', 'tablet']
+  },
+
   init() {
     // breakpoint changes
     this.setCurrentBreakpoint();

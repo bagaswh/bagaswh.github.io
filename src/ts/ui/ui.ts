@@ -42,7 +42,6 @@ export const UI = {
 
   async populateContent(element: HTMLElement) {
     let localContent = _getLocalContent();
-    let onlineContent = await db.getData('mainContent');
     if (localContent) {
       AnimationManager.animate(element, 'fadeIn', {
         speed: 'faster'
@@ -50,6 +49,7 @@ export const UI = {
       ContentRenderer.render(element, localContent, true);
     }
 
+    let onlineContent;
     if (!localContent) {
       await _makePreContentView(element);
       onlineContent = await _getOnlineContent();

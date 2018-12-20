@@ -135,11 +135,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         durations = loginData[userName].loginTrack.duration;
       }
 
-      let localeDateString = new Date().toLocaleDateString();
-      if (!durations[localeDateString]) {
-        durations[localeDateString] = 0;
+      let dateString = new Date().toDateString();
+      if (!durations[dateString]) {
+        durations[dateString] = 0;
       } else {
-        durations[localeDateString] += Number(
+        durations[dateString] += Number(
           ((new Date().getTime() - start) / 3.6e6).toPrecision(3)
         );
       }

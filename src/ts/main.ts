@@ -129,23 +129,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     setInterval(async () => {
       let loginData = (await db.getData('usersData')) as any;
 
-      let durations = Number(loginData[userName].loginTrack.duration);
+      let durations = loginData[userName].loginTrack.duration;
       if (typeof durations !== 'object') {
         loginData[userName].loginTrack.duration = {};
         durations = loginData[userName].loginTrack.duration;
       }
 
-      let dateString = new Date().toDateString();
+      let dateString = new Date().toDateString().replace(/\s/g, '');
+      let now = Number(((new Date().getTime() - start) / 3.6e6).toPrecision(3));
       if (!durations[dateString]) {
-        durations[dateString] = 0;
+        durations[dateString] = now;
       } else {
-        durations[dateString] += Number(
-          ((new Date().getTime() - start) / 3.6e6).toPrecision(3)
-        );
+        durations[dateString] += now;
       }
 
-      start = new Date().getTime();
       db.writeData('usersData', loginData);
+      start = new Date().getTime();
     }, 10000);
   })();
 });

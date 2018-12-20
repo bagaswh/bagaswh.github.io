@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v1.3';
+const CACHE_NAME = 'v1.4';
 
 function clearCache(event) {
   let cacheKeeplist = [CACHE_NAME];

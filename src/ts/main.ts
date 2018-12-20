@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         (onlineUsersData as any)[name] = {
           loginTrack: {
             count: 1,
-            duration: 0,
+            duration: {},
             lastTimeLoggedIn: new Date().toLocaleString()
           },
 

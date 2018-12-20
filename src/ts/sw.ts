@@ -2,8 +2,10 @@ export function setupServiceWorker() {
   return new Promise((resolve, reject) => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
-        .register('./sw.js', { scope: './' })
+        .register('./sw-v2.js', { scope: './' })
         .then(registration => {
+          registration.update();
+
           registration.addEventListener('updatefound', e => {
             let worker = registration.installing;
 

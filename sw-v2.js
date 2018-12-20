@@ -1,6 +1,22 @@
-const CACHE_NAME = 'v2.1';
+const CACHE_NAME = 'v4';
+
+function clearCache(event) {
+  let cacheKeeplist = [CACHE_NAME];
+
+  event.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(keyList.map((key) => {
+        if (cacheKeeplist.indexOf(key) === -1) {
+          return caches.delete(key);
+        }
+      }));
+    })
+  );
+}
 
 self.addEventListener('install', event => {
+  clearCache(event);
+
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       /* const crossOriginAssets = [new Request('https://use.fontawesome.com/releases/v5.6.1/css/all.css', {
@@ -36,16 +52,7 @@ self.addEventListener('fetch', event => {
   );
 });
 
-self.addEventListener('activate', event => {
-  let cacheKeeplist = [CACHE_NAME];
 
-  event.waitUntil(
-    caches.keys().then(keyList => {
-      return Promise.all(keyList.map(key => {
-        if (cacheKeeplist.indexOf(key) === -1) {
-          return caches.delete(key);
-        }
-      }));
-    })
-  );
+self.addEventListener('activate', (event) => {
+  clearCache(event);
 });

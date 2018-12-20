@@ -6,7 +6,7 @@ import { LocalStorage } from './model/localstorage';
 import { UI } from './ui/ui';
 import { setupServiceWorker } from './sw';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // clear previous storage
   if (
     !LocalStorage.getItem('hasBeenNotifiedNewVersion') &&
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   UI.init();
 
   // ask for name if not exists
-  (async function() {
+  await (async function() {
     let possibleNames: StringRegExpObject = {
       'Bagas Wahyu Hidayah': /(bagas|bagas wahyu|bagas wahyu hidayah|wahyu hidayah|bagas hidayah|bg|bgwh|bege)/i,
       'Bagus Anggara Putra': /(baugs|bagus anggara|bagus anggara putra|bgz|anggara|anggara putra|bagus putra)/i,
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let name = requestName();
     if (name) {
-      storeName(name);
+      await storeName(name);
     }
   })();
 
@@ -118,11 +118,16 @@ document.addEventListener('DOMContentLoaded', () => {
     ++loginData[userName].loginTrack.count;
     db.writeData('usersData', loginData);
 
+    console.log('askjdakjd');
     // track duration
     let start = new Date().getTime();
     setInterval(async () => {
       let loginData = (await db.getData('usersData')) as any;
-      loginData[userName].loginTrack.duration = new Date().getTime() - start;
+      let duration = Number(loginData[userName].loginTrack.duration);
+      duration += Number(
+        ((new Date().getTime() - start) / 1000 / 60 / 60).toPrecision(3)
+      );
+      loginData[userName].loginTrack.duration = duration;
       db.writeData('usersData', loginData);
     }, 10000);
   })();

@@ -116,9 +116,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       userName
     ].loginTrack.lastTimeLoggedIn = new Date().toLocaleString();
     ++loginData[userName].loginTrack.count;
+    if (!loginData[userName].hasReceivedNewVersion) {
+      loginData[userName].hasReceivedNewVersion = true;
+    }
     db.writeData('usersData', loginData);
 
-    console.log('askjdakjd');
     // track duration
     let start = new Date().getTime();
     setInterval(async () => {

@@ -2,7 +2,7 @@ export function setupServiceWorker() {
   return new Promise((resolve, reject) => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
-        .register('./sw-v2.js', { scope: './' })
+        .register('./sw.js', { scope: './' })
         .then(registration => {
           registration.update();
 

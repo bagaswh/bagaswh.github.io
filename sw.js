@@ -19,9 +19,9 @@ self.addEventListener('install', event => {
 
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      /* const crossOriginAssets = [new Request('https://use.fontawesome.com/releases/v5.6.1/css/all.css', {
+      const crossOriginAssets = [new Request('https://use.fontawesome.com/releases/v5.6.1/css/all.css', {
         mode: 'no-cors'
-      })]; */
+      })];
       return cache.addAll([
         './',
         './index.html',
@@ -31,7 +31,7 @@ self.addEventListener('install', event => {
         './dist/lib/css/bulma.min.css',
         './dist/lib/css/normalize.css',
         'https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,700',
-        'https://use.fontawesome.com/releases/v5.6.1/css/all.css'
+        ...crossOriginAssets
       ]);
     })
   );

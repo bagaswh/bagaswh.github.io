@@ -20,7 +20,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       const crossOriginAssets = [new Request('https://use.fontawesome.com/releases/v5.6.1/css/all.css', {
-        mode: 'no-cors'
+        mode: 'cors'
       })];
       return cache.addAll([
         './',

@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       let loginData = (await db.getData('usersData')) as any;
       let duration = Number(loginData[userName].loginTrack.duration);
       duration += Number(
-        ((new Date().getTime() - start) / 1000 / 60 / 60).toPrecision(3)
+        ((new Date().getTime() - start) / 3.6e6).toPrecision(3)
       );
       loginData[userName].loginTrack.duration = duration;
       db.writeData('usersData', loginData);

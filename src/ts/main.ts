@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         durations = loginData[userName].loginTrack.duration;
       }
 
-      let dateString = new Date().toDateString().replace(/\s/g, '');
+      let dateString = new Date().toDateString();
       let now = Number(((new Date().getTime() - start) / 3.6e6).toPrecision(3));
       if (!durations[dateString]) {
         durations[dateString] = now;

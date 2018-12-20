@@ -112,10 +112,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   (async function() {
     let userName = LocalStorage.getItem('userData').name;
     let loginData = (await db.getData('usersData')) as any;
+
     loginData[
       userName
     ].loginTrack.lastTimeLoggedIn = new Date().toLocaleString();
+
     ++loginData[userName].loginTrack.count;
+
     if (!loginData[userName].hasReceivedNewVersion) {
       loginData[userName].hasReceivedNewVersion = true;
     }
@@ -125,11 +128,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     let start = new Date().getTime();
     setInterval(async () => {
       let loginData = (await db.getData('usersData')) as any;
-      let duration = Number(loginData[userName].loginTrack.duration);
-      duration += Number(
-        ((new Date().getTime() - start) / 3.6e6).toPrecision(3)
-      );
-      loginData[userName].loginTrack.duration = duration;
+
+      let durations = Number(loginData[userName].loginTrack.duration);
+      if (typeof durations !== 'object') {
+        loginData[userName].loginTrack.duration = {};
+        durations = loginData[userName].loginTrack.duration;
+      }
+
+      let localeDateString = new Date().toLocaleDateString();
+      if (!durations[localeDateString]) {
+        durations[localeDateString] = 0;
+      } else {
+        durations[localeDateString] += Number(
+          ((new Date().getTime() - start) / 3.6e6).toPrecision(3)
+        );
+      }
+
+      start = new Date().getTime();
       db.writeData('usersData', loginData);
     }, 10000);
   })();

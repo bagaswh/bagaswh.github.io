@@ -1,4 +1,4 @@
-import { AnimationManager } from './../animation-manager';
+import { AnimationAgent } from '../animation-agent';
 import { StringAnyObject } from './../../interfaces';
 
 export class Component {
@@ -22,10 +22,10 @@ export class Component {
     };
     opts = { ...defaultOptions, ...opts };
 
-    return AnimationManager.animate(this.element, animationName, opts);
+    return AnimationAgent.animate(this.element, animationName, opts);
   }
 
   cancelAnimation() {
-    AnimationManager.cancel(this.element);
+    AnimationAgent.cancel(this.element);
   }
 }

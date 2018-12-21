@@ -1,4 +1,4 @@
-import { UtilsArray } from './../utils/utils-array';
+import { UtilsArray } from '../utils/utils-array';
 
 // https://gist.github.com/gordonbrander/2230317
 function _generateAnimationID() {
@@ -16,7 +16,7 @@ export interface AnimationOptions {
   repeat?: Boolean;
 }
 
-export const AnimationManager = {
+export const AnimationAgent = {
   Constants: {
     SPEED_FAST: 'fast',
     SPEED_VERY_FAST: 'faster',
@@ -33,7 +33,7 @@ export const AnimationManager = {
   ) {
     let defaultOpts = {
       interruptible: false,
-      speed: AnimationManager.Constants.SPEED_FAST,
+      speed: this.Constants.SPEED_FAST,
       repeat: false
     };
 
@@ -49,13 +49,13 @@ export const AnimationManager = {
 
       if (
         animationIndex > -1 &&
-        !(this.animationsOnGoing[animationIndex] as any).opts.interruptible
+        !this.animationsOnGoing[animationIndex].opts.interruptible
       ) {
         reject('animation is ongoing');
       }
 
       if (animationIndex > -1) {
-        this.cancel(element);
+        AnimationAgent.cancel(element);
       }
 
       let _animationName = ['animated', animationName, opts.speed];

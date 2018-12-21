@@ -1,5 +1,5 @@
-export const LocalStorage = {
-  getItem(key: string) {
+export class LocalStorage {
+  static getItem(key: string) {
     let item = localStorage.getItem(key);
 
     if (item) {
@@ -11,21 +11,21 @@ export const LocalStorage = {
     }
 
     return null;
-  },
+  }
 
-  setItem(key: string, value: any) {
+  static setItem(key: string, value: any) {
     if (typeof value === 'object') {
       localStorage.setItem(key, JSON.stringify(value));
     } else {
       localStorage.setItem(key, value);
     }
-  },
+  }
 
-  clear() {
+  static clear() {
     localStorage.clear();
-  },
+  }
 
-  getLength() {
+  static getLength() {
     return localStorage.length;
   }
-};
+}

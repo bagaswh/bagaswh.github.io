@@ -17,3 +17,7 @@ export interface StringObjectObject {
 export interface StringAnyObject {
   [index: string]: any;
 }
+
+export interface StringNumberObject {
+  [index: string]: number;
+}

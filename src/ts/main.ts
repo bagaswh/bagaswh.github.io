@@ -1,3 +1,4 @@
+import { Data, UsersData } from './model/database';
 import { Alert } from './ui/components/alert';
 import { UtilsString } from './utils/utils-string';
 import { db } from './model/firebase';
@@ -89,13 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       let onlineUsersData = await db.getData('usersData');
       if (!(onlineUsersData as any)[name]) {
         (onlineUsersData as any)[name] = {
-          loginTrack: {
-            count: 1,
-            duration: {},
-            lastTimeLoggedIn: new Date().toLocaleString()
-          },
-
-          clickedLinks: []
+          analytics: {}
         };
       }
 
@@ -111,40 +106,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   // track login data
   (async function() {
     let userName = LocalStorage.getItem('userData').name;
-    let loginData = (await db.getData('usersData')) as any;
+    let usersData = await Data.getUsersData();
+    let userData = Data.getUserData(usersData, userName);
+    let analytics = Data.getAnalytics(userData);
 
-    loginData[
-      userName
-    ].loginTrack.lastTimeLoggedIn = new Date().toLocaleString();
+    ++analytics.count;
+    analytics.timeLoggedIn.push(new Date().toTimeString());
 
-    ++loginData[userName].loginTrack.count;
-
-    if (!loginData[userName].hasReceivedNewVersion) {
-      loginData[userName].hasReceivedNewVersion = true;
-    }
-    db.writeData('usersData', loginData);
-
-    // track duration
     let start = new Date().getTime();
     setInterval(async () => {
-      let loginData = (await db.getData('usersData')) as any;
+      let usersData = await Data.getUsersData();
+      let userData = Data.getUserData(usersData, userName);
+      let analytics = Data.getAnalytics(userData);
 
-      let durations = loginData[userName].loginTrack.duration;
-      if (typeof durations !== 'object') {
-        loginData[userName].loginTrack.duration = {};
-        durations = loginData[userName].loginTrack.duration;
-      }
-
-      let dateString = new Date().toDateString();
       let now = Number(((new Date().getTime() - start) / 3.6e6).toPrecision(3));
-      if (!durations[dateString]) {
-        durations[dateString] = now;
-      } else {
-        durations[dateString] += now;
-      }
-
-      db.writeData('usersData', loginData);
+      analytics.duration += now;
       start = new Date().getTime();
+
+      db.writeData('usersData', usersData);
     }, 10000);
+
+    db.writeData('usersData', usersData);
   })();
 });

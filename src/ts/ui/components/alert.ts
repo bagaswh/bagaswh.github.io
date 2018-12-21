@@ -1,4 +1,4 @@
-import { AnimationOptions } from './../animation-manager';
+import { AnimationOptions } from '../animation-agent';
 import { UtilsUI } from './../ui-utils';
 import { StringAnyObject } from './../../interfaces';
 import { Component } from './component';

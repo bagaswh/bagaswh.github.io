@@ -36,7 +36,7 @@ function _renderContent(element: HTMLElement, contentData: ElementContent) {
 
   // content adding
   for (let key in contentData.content) {
-    (itemElement as any)[key] = (contentData.content as any)[key];
+    itemElement[key] = contentData.content[key];
   }
 
   // appending to element

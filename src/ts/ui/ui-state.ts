@@ -1,21 +1,11 @@
-import { StringAnyObject } from './../interfaces';
+export class UIState {
+  static readonly Constants: {
+    MOBILE_BREAKPOINTS: ['mobile-s', 'mobile-m', 'mobile-l', 'tablet'];
+  };
 
-interface UIState {
-  Constants: StringAnyObject;
+  private static Breakpoint = '';
 
-  init: () => void;
-  setCurrentBreakpoint: () => void;
-
-  Breakpoint: string;
-}
-
-// @ts-ignore
-export const UIState: UIState = {
-  Constants: {
-    MOBILE_BREAKPOINTS: ['mobile-s', 'mobile-m', 'mobile-l', 'tablet']
-  },
-
-  init() {
+  static init() {
     // breakpoint changes
     this.setCurrentBreakpoint();
 
@@ -28,9 +18,9 @@ export const UIState: UIState = {
         );
       }
     });
-  },
+  }
 
-  setCurrentBreakpoint() {
+  private static setCurrentBreakpoint() {
     if (window.innerWidth >= 1440) {
       this.Breakpoint = 'laptop-l';
     } else if (window.innerWidth >= 1024) {
@@ -45,6 +35,4 @@ export const UIState: UIState = {
       this.Breakpoint = 'mobile-s';
     }
   }
-};
-
-UIState.Breakpoint = '';
+}

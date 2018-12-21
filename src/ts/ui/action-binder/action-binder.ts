@@ -25,9 +25,9 @@ function _filterHandler(filter: string, e: Event, cb: (e: Event) => void) {
   };
 }
 
-export const ActionBinder = {
+export class ActionBinder {
   // binds all elements with `data-action` attribute
-  bindAction() {
+  static bindAction() {
     let elements = UtilsUI.$$('[data-action]');
 
     elements.forEach(element => {
@@ -100,4 +100,4 @@ export const ActionBinder = {
       });
     });
   }
-};
+}

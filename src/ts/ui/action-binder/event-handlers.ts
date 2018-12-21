@@ -1,5 +1,7 @@
+import { Data } from './../../model/database';
 import { db } from './../../model/firebase';
 import { LocalStorage } from '../../model/localstorage';
+
 interface EventHandlersNamespace {
   [index: string]: (e: any) => any;
 }
@@ -24,22 +26,20 @@ EventHandlers.CategoryLinks = {
     }
 
     let userName = LocalStorage.getItem('userData').name;
-    let onlineUsersData = await db.getData('usersData');
+    let usersData = await Data.getUsersData();
+    let userData = Data.getUserData(usersData, userName);
+    let todayAnalytics = Data.getAnalytics(userData);
 
-    let targetContent = (e.target as HTMLAnchorElement).textContent;
-
-    let clickedLinks = (onlineUsersData as any)[userName].clickedLinks;
-    if (!clickedLinks || !clickedLinks.length) {
-      (onlineUsersData as any)[userName].clickedLinks = [];
-      clickedLinks = (onlineUsersData as any)[userName].clickedLinks;
+    let targetContent = (e.target as HTMLElement).textContent;
+    if (!todayAnalytics.clickedLinks) {
+      todayAnalytics.clickedLinks = {};
     }
-    let clickedLinksIndex = clickedLinks.indexOf(targetContent);
-    if (clickedLinksIndex === -1) {
-      clickedLinks.push(targetContent, 1);
+    if (!todayAnalytics.clickedLinks[targetContent]) {
+      todayAnalytics.clickedLinks[targetContent] = 1;
     } else {
-      ++clickedLinks[clickedLinksIndex + 1];
+      ++todayAnalytics.clickedLinks[targetContent];
     }
 
-    db.writeData('usersData', onlineUsersData);
+    db.writeData('usersData', usersData);
   }
 };
